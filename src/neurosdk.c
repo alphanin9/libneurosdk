@@ -694,7 +694,7 @@ neurosdk_context_send(neurosdk_context_t *ctx, neurosdk_message_t *msg) {
 
     int total_size = 0;
     for (int i = 0; i < len; i++) {
-      neurosdk_action_t *action = &msg->value.actions_register.actions[i];
+      const neurosdk_action_t *action = &msg->value.actions_register.actions[i];
       if (!action->name) {
         LOG_ERROR(context, "Action register: action->name is NULL at index %d.",
                   i);
