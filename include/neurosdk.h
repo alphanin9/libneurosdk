@@ -14,7 +14,11 @@ extern "C" {
 #if defined(__linux__) || defined(__APPLE__)
 #define NEUROSDK_EXPORT
 #else
+#ifndef NEUROSDK_BUILD_STATIC_LIB
 #define NEUROSDK_EXPORT __declspec(dllexport)
+#else
+#define NEUROSDK_EXPORT
+#endif
 #endif
 
 #define OUT
@@ -101,7 +105,7 @@ typedef struct neurosdk_message_context {
 
 // Action Registration
 typedef struct neurosdk_message_actions_register {
-	neurosdk_action_t *actions;
+	const neurosdk_action_t *actions;
 	int actions_len;
 } neurosdk_message_actions_register_t;
 
