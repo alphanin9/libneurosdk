@@ -88,14 +88,14 @@ typedef void (*neurosdk_callback_log_t)(neurosdk_severity_e severity,
 
 // Action Definition
 typedef struct neurosdk_action {
-	char *name;
-	char *description;
-	char *json_schema;
+	const char *name;
+	const char *description;
+	const char *json_schema;
 } neurosdk_action_t;
 
 // Message Context
 typedef struct neurosdk_message_context {
-	char *message;
+	const char *message;
 	bool silent;
 } neurosdk_message_context_t;
 
@@ -107,24 +107,24 @@ typedef struct neurosdk_message_actions_register {
 
 // Action Unregistration
 typedef struct neurosdk_message_actions_unregister {
-	char **action_names;
+	const char **action_names;
 	int action_names_len;
 } neurosdk_message_actions_unregister_t;
 
 // Forced Actions
 typedef struct neurosdk_message_actions_force {
-	char *state;
-	char *query;
+	const char *state;
+	const char *query;
 	bool ephemeral_context;
-	char **action_names;
+	const char **action_names;
 	int action_names_len;
 } neurosdk_message_actions_force_t;
 
 // Action Result
 typedef struct neurosdk_message_action_result {
-	char *id;
+	const char *id;
 	bool success;
-	char *message;
+	const char *message;
 } neurosdk_message_action_result_t;
 
 // Action Message

@@ -717,7 +717,7 @@ neurosdk_context_send(neurosdk_context_t *ctx, neurosdk_message_t *msg) {
         free(json_actions);
         return NeuroSDK_OutOfMemory;
       }
-      char *schema = action->json_schema ? action->json_schema : "{}";
+      const char *schema = action->json_schema ? action->json_schema : "{}";
 
       int part_bytes =
           aprintf(&json_actions[i],
@@ -793,12 +793,12 @@ neurosdk_context_send(neurosdk_context_t *ctx, neurosdk_message_t *msg) {
   } break;
 
   case NeuroSDK_MessageKind_ActionsForce: {
-    char *query = msg->value.actions_force.query;
+    const char *query = msg->value.actions_force.query;
     if (!query) {
       LOG_ERROR(context, "actions/force: 'query' is required but is NULL.");
       return NeuroSDK_InvalidMessage;
     }
-    char **action_names = msg->value.actions_force.action_names;
+    const char **action_names = msg->value.actions_force.action_names;
     if (!action_names || msg->value.actions_force.action_names_len <= 0) {
       LOG_ERROR(context,
                 "actions/force: 'action_names' is required but is empty.");
@@ -811,9 +811,9 @@ neurosdk_context_send(neurosdk_context_t *ctx, neurosdk_message_t *msg) {
       ephemeral_null = true;
     }
 
-    char *state = msg->value.actions_force.state;
-    if (state) {
-      char *escaped = escape_string(state);
+    char *state = NULL;
+	if (msg->value.actions_force.state) {
+      char *escaped = escape_string(msg->value.actions_force.state);
       if (!escaped) {
         LOG_ERROR(context, "Out of memory escaping 'state'.");
         return NeuroSDK_OutOfMemory;
@@ -834,7 +834,7 @@ neurosdk_context_send(neurosdk_context_t *ctx, neurosdk_message_t *msg) {
       }
     }
 
-    char *ephemeral_context_str = "null";
+    const char *ephemeral_context_str = "null";
     if (!ephemeral_null) {
       ephemeral_context_str =
           msg->value.actions_force.ephemeral_context ? "true" : "false";
