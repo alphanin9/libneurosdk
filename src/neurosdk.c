@@ -164,13 +164,9 @@ static char *escape_string(char const *str) {
       *dst++ = '\\';
       *dst++ = '\"';
       break;
-// Note: removed this for this fork because I don't think single quotes need escape in JSON
-// case '\'':
-//      *dst++ = '\\';
-//      *dst++ = '\'';
-//      break;
     default:
-      if ((unsigned char)*str < 32 || (unsigned char)*str > 126) {
+	  // Note: this does not escape \u2028 and \u2029 so it's not fully JSONy
+      if ((unsigned char)*str < 32) {
         dst += sprintf(dst, "\\x%02X", (unsigned char)*str);
       } else {
         *dst++ = *str;
