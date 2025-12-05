@@ -16,8 +16,13 @@
 #define unreachable() (unreachable_impl())
 #endif
 
+#ifndef BUILD_WITH_BUILDTOOLS
 #include "json.h"
 #include "mongoose.h"
+#else
+#include <json.h>
+#include <mongoose.h>
+#endif
 
 #define ENVIRONMENT_VARIABLE_NAME "NEURO_SDK_WS_URL"
 #define MESSAGE_QUEUE_SIZE 10
@@ -969,8 +974,9 @@ neurosdk_message_destroy(neurosdk_message_t *msg) {
 	}
 	return NeuroSDK_None;
 }
-
-#include "mongoose.c"
 #ifndef BUILD_WITH_BUILDTOOLS
+#include "mongoose.c"
 #include "tinycthread.c"
+#else
+#include <mongoose.c>
 #endif
