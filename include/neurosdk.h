@@ -60,7 +60,10 @@ typedef enum neurosdk_severity {
 typedef enum neurosdk_context_create_flags {
 	NeuroSDK_ContextCreateFlags_None = 0,
 	NeuroSDK_ContextCreateFlags_DebugPrints = (1 << 0),
-	NeuroSDK_ContextCreateFlags_ValidationLayers = (1 << 1)
+	NeuroSDK_ContextCreateFlags_ValidationLayers = (1 << 1),
+	// Note: some Neuro API implementations will not follow proper RFC impl 
+	// and will break when trying to connect to them
+	NeuroSDK_ContextCreateFlags_FallbackToNonRFCImplementation = (1 << 2),
 } neurosdk_context_create_flags_e;
 
 #define NEUROSDK_CONTEXT_CREATE_FLAGS_DEBUG  \

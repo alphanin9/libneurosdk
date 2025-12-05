@@ -521,11 +521,18 @@ neurosdk_context_create(neurosdk_context_t *ctx,
 		goto cleanup2;
 	}
 
-	struct mg_str host = mg_url_host(fetched_url);
-	unsigned short port = mg_url_port(fetched_url);
-	context->conn =
-	    mg_ws_connect(&context->mgr, fetched_url, connection_fn_, (void *)context,
-	                  "Host: %.*s:%u\r\n", (int)host.len, host.buf, port);
+	if ((desc->flags &
+	    NeuroSDK_ContextCreateFlags_FallbackToNonRFCImplementation) == 0u) {
+		struct mg_str host = mg_url_host(fetched_url);
+		unsigned short port = mg_url_port(fetched_url);
+
+		context->conn = mg_ws_connect(&context->mgr, fetched_url, connection_fn_,
+		                              (void *)context, "Host: %.*s:%u\r\n",
+		                              (int)host.len, host.buf, port);
+	} else {
+		context->conn = mg_ws_connect(&context->mgr, fetched_url, connection_fn_,
+		                              (void *)context, NULL);
+	}
 
 	if (!context->conn) {
 		res = NeuroSDK_ConnectionError;
@@ -535,6 +542,7 @@ neurosdk_context_create(neurosdk_context_t *ctx,
 	for (int i = 0; i < 10 && !context->connected; i++) {
 		mg_mgr_poll(&context->mgr, 300);
 	}
+
 	if (!context->connected) {
 		res = NeuroSDK_ConnectionError;
 		goto cleanup3;
