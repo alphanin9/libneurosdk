@@ -540,7 +540,7 @@ neurosdk_context_create(neurosdk_context_t *ctx,
 	}
 
 	for (int i = 0; i < 10 && !context->connected; i++) {
-		mg_mgr_poll(&context->mgr, 300);
+		mg_mgr_poll(&context->mgr, context->poll_ms);
 	}
 
 	if (!context->connected) {
