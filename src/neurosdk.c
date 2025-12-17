@@ -865,6 +865,11 @@ neurosdk_context_send(neurosdk_context_t *ctx, neurosdk_message_t *msg) {
 				    msg->value.actions_force.ephemeral_context ? "true" : "false";
 			}
 
+			char const *priority = msg->value.actions_force.priority;
+			if (!priority) {
+				priority = "low";
+			}
+
 			char *json_str = NULL;
 			make_array(action_names, msg->value.actions_force.action_names_len,
 			           &json_str);
@@ -879,9 +884,9 @@ neurosdk_context_send(neurosdk_context_t *ctx, neurosdk_message_t *msg) {
 			bytes = aprintf(
 			    &str,
 			    "{\"command\":\"actions/"
-			    "force\",\"game\":\"%s\",\"data\":{\"state\":%s,\"query\":\"%s\","
+			    "force\",\"game\":\"%s\",\"data\":{\"state\":%s,\"query\":\"%s\",\"priority\":\"%s\","
 			    "\"ephemeral_context\":%s,\"action_names\":%s}}",
-			    context->game_name, state, query, ephemeral_context_str, json_str);
+			    context->game_name, state, query, priority, ephemeral_context_str, json_str);
 
 			free(json_str);
 			free(state);

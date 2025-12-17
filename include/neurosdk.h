@@ -122,6 +122,7 @@ typedef struct neurosdk_message_actions_unregister {
 typedef struct neurosdk_message_actions_force {
 	const char *state;
 	const char *query;
+	const char *priority;
 	bool ephemeral_context;
 	const char **action_names;
 	int action_names_len;
